@@ -3,7 +3,6 @@ import random
 
 def get_unique_list_numbers() -> list[int]:
     return random.sample(range(-10, 11), 15)
-    # TODO написать функцию для получения списка уникальных целых чисел
 
 
 
