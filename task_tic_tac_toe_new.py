@@ -3,7 +3,7 @@ from typing import List, Union, Tuple
 """
 Функция создания поля
 
-Пример путого поля 3x3 - | | | | 
+Пример пуcтого поля 3x3 - | | | | 
                          | | | | 
                          | | | | 
                          
@@ -109,13 +109,16 @@ def win_game(table):
     :param table:
     :return:
     """
-    for win_combination in table:
-        if win_combination in "|X|X|X|":
-            print('Выиграл игрок, который ходил Х')
-        elif win_combination in "|O|O|O|":
-            print('Выиграл игрок, который ходил O')
-        else:
-            print('Продолжаем игру')
+    win_tuple = ("XXX", "000")
+    for row in table:  # бежим по строкам
+        if "".join(str(row)) in win_tuple:  # если то, что записано на поле является или "XXX" или "000", то выиграли
+            return True
+    for col in zip(*table):  # бежим по столбцам
+        if "".join(str(col)) in win_tuple:
+            return True
+    for row, col in table:
+        if "".join(str(row, col)) in win_tuple:
+            return True
 
 
 """
@@ -139,10 +142,9 @@ def game(table, size, player):
         current_player = change_player(current_player)  # смена игрока
     if counter == size * size:
         print("Ничья")
-        print("Есть желание повторить игру? да/нет")
-        continue_game = "да" or "нет"
+        continue_game = input("Есть желание повторить игру? да/нет\n")
         if continue_game == "да":
-            game(table, size, player)
+            begin()
         else:
             print("Игра окончена.")
 
@@ -155,11 +157,11 @@ def game(table, size, player):
 def begin():
     global who_play
     size = get_int_val("Введи размер поля\n")
-    empty_place = f'| |'  # пустые места заполняются числами от 1 до размера поля к квадрате
+    empty_place = f' '  # пустые места заполняются числами от 1 до размера поля к квадрате
     table = get_table(size, empty_place)
     player = input("Кто ходит первый? X/O\n")  # кто ходит первый "X" или "O"
     if player == "X" or "O":
-        who_play = input("С кем будет игра? Ч(человек)/К(компьютер)\n")
+        who_play = input("С кем будет игра? ч(человек)/к(компьютер)\n")
         if who_play == "человек" or "Ч":  # если "человек",
             game(table, size, player)  # то начинаем игру
         elif who_play == "компьютер" or "К":  # если "компьютер"
